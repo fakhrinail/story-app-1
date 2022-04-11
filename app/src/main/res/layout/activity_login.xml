@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/title_login_page"
-        android:textColor="@color/black"
+        android:textColor="?android:textColorPrimary"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +26,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:text="@string/email"
-        android:textColor="@color/black"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
@@ -35,9 +35,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:padding="4dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/edit_text_border"
         android:ems="10"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailTextView" />
@@ -50,7 +52,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="@string/password"
-        android:textColor="@color/black"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
@@ -60,6 +62,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        android:padding="4dp"
+        android:textColor="@color/black"
         android:background="@drawable/edit_text_border"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,6 +79,7 @@
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/navi"
         android:text="@string/login"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
@@ -86,7 +91,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:text="Don't have an account? Register below"
-        android:textColor="@color/black"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
@@ -98,6 +103,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/navi"
+        android:textColor="?android:textColorPrimary"
         android:text="Register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
