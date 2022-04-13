@@ -31,18 +31,16 @@ class LoginActivity : AppCompatActivity() {
         }
 
         viewModel.isError.observe(this) {
-            showError(it, this@LoginActivity, "Login error, please try again")
+            if (it) {
+                showError(it, this@LoginActivity, "Login error, please try again")
+            } else {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
         }
 
         viewModel.isLoading.observe(this) {
             showLoading(it, binding.progressBar)
-        }
-
-        viewModel.isLogin.observe(this) {
-            if (it) {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
         }
 
         setContentView(binding.root)
