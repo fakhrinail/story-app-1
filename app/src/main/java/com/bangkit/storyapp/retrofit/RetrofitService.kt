@@ -1,9 +1,9 @@
 package com.bangkit.storyapp.retrofit
 
 import com.bangkit.storyapp.model.ApiResponse
+import com.bangkit.storyapp.model.LoginRequest
 import retrofit2.Call
 import retrofit2.http.*
-import java.io.File
 
 interface RetrofitService {
     @POST("register")
@@ -13,10 +13,10 @@ interface RetrofitService {
         @Field("password") password: String
     ): Call<ApiResponse>
 
+    @Headers("Content-Type: application/json")
     @POST("login")
     fun login(
-        @Field("email") email: String,
-        @Field("password") password: String
+        @Body loginData: LoginRequest
     ): Call<ApiResponse>
 
 //    @POST("stories")

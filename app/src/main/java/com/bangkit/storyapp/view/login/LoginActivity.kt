@@ -1,33 +1,34 @@
 package com.bangkit.storyapp.view.login
 
+import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.LayoutInflater
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
-import com.bangkit.storyapp.R
+import androidx.lifecycle.ViewModelProvider
 import com.bangkit.storyapp.databinding.ActivityLoginBinding
-import com.bangkit.storyapp.databinding.ActivityMainBinding
+import com.bangkit.storyapp.factory.ViewModelFactory
 import com.bangkit.storyapp.util.showError
 import com.bangkit.storyapp.util.showLoading
+import com.bangkit.storyapp.view.main.MainActivity
 import com.bangkit.storyapp.view.register.RegisterActivity
-import org.w3c.dom.Text
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private val viewModel by viewModels<LoginViewModel>()
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProvider(this, ViewModelFactory(applicationContext))[LoginViewModel::class.java]
+
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
         binding.loginButton.setOnClickListener {
-            val email = binding.emailEditText.text.toString()
-            val pass = binding.passwordEditText.text.toString()
+            val email = binding.emailEditText.text?.trim().toString()
+            val pass = binding.passwordEditText.text?.trim().toString()
             viewModel.login(email, pass)
         }
 
@@ -42,6 +43,13 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.isLoading.observe(this) {
             showLoading(it, binding.progressBar)
+        }
+
+        viewModel.isLogin.observe(this) {
+            if (it) {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
         }
 
         setContentView(binding.root)

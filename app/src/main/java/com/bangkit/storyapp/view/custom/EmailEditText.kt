@@ -33,7 +33,7 @@ class EmailEditText: AppCompatEditText {
 
             override fun afterTextChanged(s: Editable) {
                 isTouched = true
-                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(s.trim()).matches()) {
                     error = "Email format is invalid"
                 }
             }

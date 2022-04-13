@@ -43,7 +43,7 @@ class PasswordEditText : AppCompatEditText {
 
             override fun afterTextChanged(s: Editable) {
                 isTouched = true
-                if (s.length <= 6) {
+                if (s.trim().length <= 6) {
                     error = "Minimum password length is 6"
                 }
             }
