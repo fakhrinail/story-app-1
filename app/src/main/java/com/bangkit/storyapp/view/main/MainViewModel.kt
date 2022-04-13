@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.bangkit.storyapp.model.UserModel
+import com.bangkit.storyapp.model.user.UserModel
 import com.bangkit.storyapp.pref.UserPreference
 
 class MainViewModel : ViewModel() {

@@ -1,7 +1,7 @@
 package com.bangkit.storyapp.pref
 
 import android.content.Context
-import com.bangkit.storyapp.model.UserModel
+import com.bangkit.storyapp.model.user.UserModel
 
 internal class UserPreference(context: Context) {
     companion object {

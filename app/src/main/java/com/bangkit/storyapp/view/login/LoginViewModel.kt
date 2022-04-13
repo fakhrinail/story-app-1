@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bangkit.storyapp.model.ApiResponse
-import com.bangkit.storyapp.model.LoginRequest
-import com.bangkit.storyapp.model.UserModel
+import com.bangkit.storyapp.model.login.LoginRequest
+import com.bangkit.storyapp.model.user.UserModel
 import com.bangkit.storyapp.pref.UserPreference
 import com.bangkit.storyapp.retrofit.RetrofitConfig
 import retrofit2.Call
@@ -15,8 +15,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginViewModel : ViewModel() {
-    private val _isLogin = MutableLiveData<Boolean>()
-    val isLogin: LiveData<Boolean> = _isLogin
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
     private val _isError = MutableLiveData<Boolean>()
@@ -46,7 +44,6 @@ class LoginViewModel : ViewModel() {
                         )
                     )
                     Toast.makeText(context, loginResult?.token, Toast.LENGTH_SHORT).show()
-                    _isLogin.value = true
                 }
             }
 

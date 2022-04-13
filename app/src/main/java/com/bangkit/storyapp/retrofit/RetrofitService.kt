@@ -1,7 +1,7 @@
 package com.bangkit.storyapp.retrofit
 
 import com.bangkit.storyapp.model.ApiResponse
-import com.bangkit.storyapp.model.LoginRequest
+import com.bangkit.storyapp.model.login.LoginRequest
 import retrofit2.Call
 import retrofit2.http.*
 

@@ -1,4 +1,4 @@
-package com.bangkit.storyapp.model
+package com.bangkit.storyapp.model.user
 
 data class UserModel (
     var name: String? = null,
