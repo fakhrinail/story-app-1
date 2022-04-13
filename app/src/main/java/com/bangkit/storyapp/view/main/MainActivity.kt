@@ -6,15 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.bangkit.storyapp.R
 import com.bangkit.storyapp.databinding.ActivityMainBinding
-import com.bangkit.storyapp.factory.ViewModelFactory
 import com.bangkit.storyapp.view.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,9 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         setupView()
 
-        viewModel = ViewModelProvider(this, ViewModelFactory(applicationContext))[MainViewModel::class.java]
-
-        viewModel.getUserData()
+        viewModel.getUserData(applicationContext)
 
         viewModel.userModel.observe(this) {
             if (it.token.isNullOrBlank()) {
