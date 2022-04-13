@@ -2,15 +2,15 @@ package com.bangkit.storyapp.retrofit
 
 import com.bangkit.storyapp.model.ApiResponse
 import com.bangkit.storyapp.model.login.LoginRequest
+import com.bangkit.storyapp.model.register.RegisterRequest
 import retrofit2.Call
 import retrofit2.http.*
 
 interface RetrofitService {
+    @Headers("Content-Type: application/json")
     @POST("register")
     fun register(
-        @Field("name") name: String,
-        @Field("email") email: String,
-        @Field("password") password: String
+        @Body registerData: RegisterRequest
     ): Call<ApiResponse>
 
     @Headers("Content-Type: application/json")

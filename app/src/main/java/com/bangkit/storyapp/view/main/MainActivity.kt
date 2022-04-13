@@ -26,12 +26,15 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.getUserData(applicationContext)
 
-        viewModel.userModel.observe(this) {
-            if (it.token.isNullOrBlank()) {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            }
-        }
+//        viewModel.userModel.observe(this) {
+//            if (it.token.isNullOrBlank()) {
+//                startActivity(Intent(this, LoginActivity::class.java))
+//                finish()
+//            }
+//        }
+
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
     private fun setupView() {
