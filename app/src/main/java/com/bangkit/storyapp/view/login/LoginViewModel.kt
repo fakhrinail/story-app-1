@@ -1,7 +1,9 @@
 package com.bangkit.storyapp.view.login
 
+import android.app.Application
 import android.content.Context
 import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,18 +16,19 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> = _isError
 
-    fun login(context: Context, email: String, password: String) {
+    fun login(email: String, password: String) {
         _isLoading.value = true
 
+        val context = getApplication<Application>().applicationContext
         val userPreference = UserPreference(context)
         val loginData = LoginRequest(email, password)
-        val client = RetrofitConfig.getApiService().login(loginData)
+        val client = RetrofitConfig.getApiService(context).login(loginData)
         client.enqueue(object : Callback<ApiResponse> {
             override fun onResponse(
                 call: Call<ApiResponse>,

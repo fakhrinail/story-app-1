@@ -22,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text?.trim().toString()
             val pass = binding.passwordEditText.text?.trim().toString()
-            viewModel.login(applicationContext, email, pass)
+            viewModel.login(email, pass)
         }
 
         binding.registerButton.setOnClickListener {

@@ -1,7 +1,7 @@
 package com.bangkit.storyapp.model
 
 import com.bangkit.storyapp.model.login.LoginResult
-import com.bangkit.storyapp.model.story.ListStory
+import com.bangkit.storyapp.model.story.ListStoryItem
 import com.google.gson.annotations.SerializedName
 
 data class ApiResponse(
@@ -16,5 +16,5 @@ data class ApiResponse(
 	val loginResult: LoginResult? = null,
 
     @field:SerializedName("listStory")
-	val listStory: ListStory? = null,
+	val listStory: List<ListStoryItem>? = null,
 )

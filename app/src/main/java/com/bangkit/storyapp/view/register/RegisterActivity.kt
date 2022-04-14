@@ -28,7 +28,7 @@ class RegisterActivity : AppCompatActivity() {
                 val email = binding.emailEditText.text?.trim().toString()
                 val pass = binding.passwordEditText.text?.trim().toString()
 
-                loginViewModel.login(applicationContext, email, pass)
+                loginViewModel.login(email, pass)
             }
         }
 

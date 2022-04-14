@@ -2,12 +2,6 @@ package com.bangkit.storyapp.model.story
 
 import com.google.gson.annotations.SerializedName
 
-data class ListStory(
-
-	@field:SerializedName("listStory")
-	val listStory: List<ListStoryItem?>? = null
-)
-
 data class ListStoryItem(
 
 	@field:SerializedName("photoUrl")

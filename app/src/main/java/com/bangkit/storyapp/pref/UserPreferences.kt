@@ -25,4 +25,7 @@ internal class UserPreference(context: Context) {
         model.token = preferences.getString(TOKEN, "")
         return model
     }
+    fun getToken(): String? {
+        return preferences.getString(TOKEN, "")
+    }
 }

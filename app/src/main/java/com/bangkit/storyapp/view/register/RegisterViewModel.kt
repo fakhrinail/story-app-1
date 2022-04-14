@@ -1,7 +1,9 @@
 package com.bangkit.storyapp.view.register
 
+import android.app.Application
 import android.content.Context
 import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel(application: Application) : AndroidViewModel(application) {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
     private val _isError = MutableLiveData<Boolean>()
@@ -24,8 +26,9 @@ class RegisterViewModel : ViewModel() {
     fun register(name: String, email: String, password: String) {
         _isLoading.value = true
 
+        val context = getApplication<Application>().applicationContext
         val registerData = RegisterRequest(name, email, password)
-        val client = RetrofitConfig.getApiService().register(registerData)
+        val client = RetrofitConfig.getApiService(context).register(registerData)
         client.enqueue(object : Callback<ApiResponse> {
             override fun onResponse(
                 call: Call<ApiResponse>,

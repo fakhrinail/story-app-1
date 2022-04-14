@@ -7,17 +7,20 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface RetrofitService {
-    @Headers("Content-Type: application/json")
+    @Headers("Content-Type: application/json", "No-Authentication: true")
     @POST("register")
     fun register(
         @Body registerData: RegisterRequest
     ): Call<ApiResponse>
 
-    @Headers("Content-Type: application/json")
+    @Headers("Content-Type: application/json", "No-Authentication: true")
     @POST("login")
     fun login(
         @Body loginData: LoginRequest
     ): Call<ApiResponse>
+
+    @GET("stories")
+    fun getStories():Call<ApiResponse>
 
 //    @POST("stories")
 //    fun postStory(
