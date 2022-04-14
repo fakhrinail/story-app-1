@@ -20,15 +20,15 @@
             android:id="@+id/textViewItemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textAppearance="?attr/textAppearanceHeadline5" />
+            android:padding="8dp"
+            android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
             android:id="@+id/textViewItemDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:padding="8dp"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
 
     </LinearLayout>
 

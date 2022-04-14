@@ -42,6 +42,7 @@ class StoriesAdapter(private val appContext: Context) : RecyclerView.Adapter<Sto
 
         with(viewHolder.binding) {
             textViewItemName.text = story?.name
+            textViewItemDesc.text = story?.description
             Glide.with(appContext).load(story?.photoUrl).into(imageViewItem)
             root.setOnClickListener {
                 onClickedCallback.onClicked(story, appContext)
