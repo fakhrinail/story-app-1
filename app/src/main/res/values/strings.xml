@@ -10,4 +10,6 @@
     <string name="name">Name</string>
     <string name="login_text">Already have an account? Login below</string>
     <string name="story_image">Story image</string>
+    <string name="logout">Logout</string>
+    <string name="post_story">Post story</string>
 </resources>

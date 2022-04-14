@@ -18,6 +18,11 @@ internal class UserPreference(context: Context) {
         editor.putString(TOKEN, value.token)
         editor.apply()
     }
+    fun clearUser() {
+        val editor = preferences.edit()
+        editor.clear()
+        editor.apply()
+    }
     fun getUser(): UserModel {
         val model = UserModel()
         model.name = preferences.getString(NAME, "")

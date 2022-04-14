@@ -16,6 +16,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/postStoryFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:tint="@color/white"
+        android:backgroundTint="@color/navi"
+        app:borderWidth="0dp"
+        android:contentDescription="@string/post_story"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"

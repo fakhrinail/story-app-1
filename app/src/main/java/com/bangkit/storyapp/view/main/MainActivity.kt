@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -13,11 +15,13 @@ import com.bangkit.storyapp.R
 import com.bangkit.storyapp.databinding.ActivityMainBinding
 import com.bangkit.storyapp.helper.StoryDiffCallback
 import com.bangkit.storyapp.model.story.ListStoryItem
+import com.bangkit.storyapp.pref.UserPreference
 import com.bangkit.storyapp.util.showError
 import com.bangkit.storyapp.util.showLoading
 import com.bangkit.storyapp.view.adapter.StoriesAdapter
 import com.bangkit.storyapp.view.detail.StoryDetailActivity
 import com.bangkit.storyapp.view.login.LoginActivity
+import com.bangkit.storyapp.view.post.PostStoryActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -54,7 +58,30 @@ class MainActivity : AppCompatActivity() {
             showLoading(it, binding.progressBar)
         }
 
+        binding.postStoryFab.setOnClickListener {
+            startActivity(Intent(this, PostStoryActivity::class.java))
+            finish()
+        }
+
         setContentView(binding.root)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.logoutMenu -> {
+                val pref = UserPreference(applicationContext)
+                pref.clearUser()
+                viewModel.getUserData()
+                true
+            }
+            else -> true
+        }
     }
 
     private fun setupRecyclerView() {
