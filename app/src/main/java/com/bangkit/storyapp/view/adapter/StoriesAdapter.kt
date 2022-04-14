@@ -53,6 +53,6 @@ class StoriesAdapter(private val appContext: Context) : RecyclerView.Adapter<Sto
     override fun getItemCount() = stories.size
 
     interface OnClickedCallback {
-        fun onClicked(profileData: ListStoryItem?, appContext: Context)
+        fun onClicked(storyData: ListStoryItem?, appContext: Context)
     }
 }

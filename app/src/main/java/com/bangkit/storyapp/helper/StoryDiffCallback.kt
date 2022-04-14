@@ -16,7 +16,7 @@ class StoryDiffCallback(
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldStoryList[oldItemPosition]?.createdAt == newStoryList[newItemPosition]?.createdAt
+        return oldStoryList[oldItemPosition]?.id == newStoryList[newItemPosition]?.id
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

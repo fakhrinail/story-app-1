@@ -11,10 +11,12 @@ import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.bangkit.storyapp.R
 import com.bangkit.storyapp.databinding.ActivityMainBinding
+import com.bangkit.storyapp.helper.StoryDiffCallback
 import com.bangkit.storyapp.model.story.ListStoryItem
 import com.bangkit.storyapp.util.showError
 import com.bangkit.storyapp.util.showLoading
 import com.bangkit.storyapp.view.adapter.StoriesAdapter
+import com.bangkit.storyapp.view.detail.StoryDetailActivity
 import com.bangkit.storyapp.view.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
@@ -58,10 +60,10 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         storiesAdapter = StoriesAdapter(this@MainActivity)
         storiesAdapter.setOnClickedCallback(object : StoriesAdapter.OnClickedCallback {
-            override fun onClicked(profileData: ListStoryItem?, appContext: Context) {
-//                val intent = Intent(appContext, ProfileActivity::class.java)
-//                intent.putExtra(ProfileActivity.USER, profileData?.login)
-//                startActivity(intent, null)
+            override fun onClicked(storyData: ListStoryItem?, appContext: Context) {
+                val intent = Intent(appContext, StoryDetailActivity::class.java)
+                intent.putExtra(StoryDetailActivity.STORY, storyData)
+                startActivity(intent, null)
             }
         })
         binding.storyListRecyclerView.apply {
