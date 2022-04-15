@@ -24,19 +24,10 @@ interface RetrofitService {
     @GET("stories")
     fun getStories():Call<ApiResponse>
 
-    @Headers("Content-Type: application/json", "No-Authentication: true")
     @Multipart
-    @POST("/v1/stories/guest")
-    fun uploadImage(
+    @POST("/v1/stories")
+    fun postStory(
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
     ): Call<ApiResponse>
-
-//    @POST("stories")
-//    fun postStory(
-//        @Field("description") description: String,
-//        @Field("photo") photo: File,
-//        @Field("lat") lat: Float?,
-//        @Field("lon") lon: Float?,
-//    ): Call<ApiResponse>
 }

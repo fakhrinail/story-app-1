@@ -10,28 +10,41 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bangkit.storyapp.R
 import com.bangkit.storyapp.databinding.ActivityPostStoryBinding
-import com.bangkit.storyapp.util.createCustomTempFile
-import com.bangkit.storyapp.util.rotateBitmap
-import com.bangkit.storyapp.util.uriToFile
+import com.bangkit.storyapp.model.ApiResponse
+import com.bangkit.storyapp.retrofit.RetrofitConfig
+import com.bangkit.storyapp.util.*
+import com.bangkit.storyapp.view.login.LoginViewModel
+import com.bangkit.storyapp.view.main.MainActivity
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class PostStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPostStoryBinding
     private lateinit var currentPhotoPath: String
-
+    private val viewModel by viewModels<PostStoryViewModel>()
     private var getFile: File? = null
 
     companion object {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -66,24 +79,44 @@ class PostStoryActivity : AppCompatActivity() {
             )
         }
 
-        binding.cameraButton.setOnClickListener {
-            startTakePhoto()
+        with(binding) {
+            cameraButton.setOnClickListener {
+                startTakePhoto()
+            }
+            galleryButton.setOnClickListener {
+                startGallery()
+            }
+            uploadButton.setOnClickListener {
+                val desc = descEditText.text.toString()
+                viewModel.uploadImage(desc, getFile as File, applicationContext)
+            }
+            viewModel.isLoading.observe(this@PostStoryActivity) {
+                showLoading(it, progressBar)
+            }
+            viewModel.isError.observe(this@PostStoryActivity){
+                if (it) {
+                    showError(it, applicationContext, "Upload story failed")
+                } else {
+                    startActivity(Intent(this@PostStoryActivity, MainActivity::class.java))
+                    finish()
+                }
+            }
         }
-        binding.galleryButton.setOnClickListener {
-            startGallery()
-        }
+
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
-
     private val launcherIntentCamera = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == RESULT_OK) {
             val myFile = File(currentPhotoPath)
+
+            getFile = myFile
+
             val result = rotateBitmap(
                 BitmapFactory.decodeFile(myFile.path),
                 true
@@ -99,6 +132,9 @@ class PostStoryActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val selectedImg: Uri = result.data?.data as Uri
             val myFile = uriToFile(selectedImg, this@PostStoryActivity)
+
+            getFile = myFile
+
             binding.previewImageView.setImageURI(selectedImg)
         }
     }
