@@ -2,12 +2,13 @@ package com.bangkit.storyapp.view.main
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import com.bangkit.storyapp.R
@@ -63,7 +64,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.postStoryFab.setOnClickListener {
             startActivity(Intent(this, PostStoryActivity::class.java))
-            finish()
         }
 
         setContentView(binding.root)
@@ -77,6 +77,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.settingsMenu -> {
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+                true
+            }
             R.id.logoutMenu -> {
                 val pref = UserPreference(applicationContext)
                 pref.clearUser()

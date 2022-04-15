@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="title_login_page">Halaman Masuk</string>
+    <string name="email">Surel</string>
+    <string name="password">Kata Sandi</string>
+    <string name="login">Masuk</string>
+    <string name="register_text">Belum punya akun? Silahkan daftar dengan tombol  di bawah ini</string>
+    <string name="register">Daftar</string>
+    <string name="register_page">Halaman Daftar</string>
+    <string name="name">Nama</string>
+    <string name="login_text">Sudah punya akun? Silahkan masuk dengan tombol di bawah ini</string>
+    <string name="story_image">Gambar cerita</string>
+    <string name="logout">Keluar</string>
+    <string name="post_story">Tambahkan cerita</string>
+    <string name="gallery">Galeri</string>
+    <string name="camera">Kamera</string>
+    <string name="upload">Unggah</string>
+    <string name="description">Deskripsi</string>
+    <string name="image_preview">Tinjau gambar</string>
+    <string name="settings">Pengaturan</string>
+</resources>
