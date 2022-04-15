@@ -13,7 +13,6 @@ import com.bangkit.storyapp.view.main.MainActivity
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
-    private val loginViewModel by viewModels<LoginViewModel>()
     private val registerViewModel by viewModels<RegisterViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,27 +24,12 @@ class RegisterActivity : AppCompatActivity() {
             if (it) {
                 showError(it, this@RegisterActivity, "Register error, please try again")
             } else {
-                val email = binding.emailEditText.text?.trim().toString()
-                val pass = binding.passwordEditText.text?.trim().toString()
-
-                loginViewModel.login(email, pass)
-            }
-        }
-
-        loginViewModel.isError.observe(this) {
-            if (it) {
-                showError(it, this@RegisterActivity, "Login error, please try again")
-            } else {
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
         }
 
         registerViewModel.isLoading.observe(this) {
-            showLoading(it, binding.progressBar)
-        }
-
-        loginViewModel.isLoading.observe(this) {
             showLoading(it, binding.progressBar)
         }
 
