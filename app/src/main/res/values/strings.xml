@@ -12,4 +12,9 @@
     <string name="story_image">Story image</string>
     <string name="logout">Logout</string>
     <string name="post_story">Post story</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="upload">Upload</string>
+    <string name="description">Description</string>
+    <string name="image_preview">Image preview</string>
 </resources>
