@@ -3,6 +3,7 @@ package com.bangkit.storyapp.view.register
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.bangkit.storyapp.databinding.ActivityRegisterBinding
 import com.bangkit.storyapp.util.showError
@@ -24,6 +25,7 @@ class RegisterActivity : AppCompatActivity() {
             if (it) {
                 showError(it, this@RegisterActivity, "Register error, please try again")
             } else {
+                Toast.makeText(this@RegisterActivity, "Register successful", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }

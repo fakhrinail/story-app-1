@@ -1,8 +1,12 @@
 package com.bangkit.storyapp.view.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
+import androidx.core.util.Pair
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bangkit.storyapp.databinding.StoryItemBinding
@@ -45,7 +49,7 @@ class StoriesAdapter(private val appContext: Context) : RecyclerView.Adapter<Sto
             textViewItemDesc.text = story?.description
             Glide.with(appContext).load(story?.photoUrl).into(imageViewItem)
             root.setOnClickListener {
-                onClickedCallback.onClicked(story, appContext)
+                onClickedCallback.onClicked(story, appContext, this)
             }
         }
     }
@@ -53,6 +57,6 @@ class StoriesAdapter(private val appContext: Context) : RecyclerView.Adapter<Sto
     override fun getItemCount() = stories.size
 
     interface OnClickedCallback {
-        fun onClicked(storyData: ListStoryItem?, appContext: Context)
+        fun onClicked(storyData: ListStoryItem?, appContext: Context, binding: StoryItemBinding)
     }
 }

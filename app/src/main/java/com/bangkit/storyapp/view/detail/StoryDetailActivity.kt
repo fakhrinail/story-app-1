@@ -1,7 +1,10 @@
 package com.bangkit.storyapp.view.detail
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.bangkit.storyapp.R
 import com.bangkit.storyapp.databinding.ActivityStoryDetailBinding
 import com.bangkit.storyapp.model.story.ListStoryItem

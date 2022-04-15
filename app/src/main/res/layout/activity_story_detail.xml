@@ -7,10 +7,11 @@
     tools:context=".view.detail.StoryDetailActivity">
 
     <ImageView
-        android:contentDescription="@string/story_image"
         android:id="@+id/storyDetailImageView"
         android:layout_width="240dp"
         android:layout_height="240dp"
+        android:contentDescription="@string/story_image"
+        android:transitionName="image"
         app:layout_constraintBottom_toBottomOf="@id/guidelineHorizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +26,7 @@
         android:padding="10dp"
         android:textColor="?android:textColorPrimary"
         android:textSize="20sp"
+        android:transitionName="name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/storyDetailImageView"
@@ -39,6 +41,7 @@
         android:padding="10dp"
         android:textColor="?android:textColorPrimary"
         android:textSize="16sp"
+        android:transitionName="description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameTextView"

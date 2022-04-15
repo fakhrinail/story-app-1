@@ -2,18 +2,17 @@ package com.bangkit.storyapp.view.main
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowInsets
-import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import com.bangkit.storyapp.R
 import com.bangkit.storyapp.databinding.ActivityMainBinding
-import com.bangkit.storyapp.helper.StoryDiffCallback
+import com.bangkit.storyapp.databinding.StoryItemBinding
 import com.bangkit.storyapp.model.story.ListStoryItem
 import com.bangkit.storyapp.pref.UserPreference
 import com.bangkit.storyapp.util.showError
@@ -47,6 +46,10 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
 
         viewModel.stories.observe(this) {
+            if (it.isNullOrEmpty()) {
+                Toast.makeText(this@MainActivity, "No story available :(", Toast.LENGTH_SHORT).show()
+            }
+
             storiesAdapter.setStories(it)
         }
 
@@ -87,10 +90,19 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         storiesAdapter = StoriesAdapter(this@MainActivity)
         storiesAdapter.setOnClickedCallback(object : StoriesAdapter.OnClickedCallback {
-            override fun onClicked(storyData: ListStoryItem?, appContext: Context) {
+            override fun onClicked(storyData: ListStoryItem?, appContext: Context, binding: StoryItemBinding) {
                 val intent = Intent(appContext, StoryDetailActivity::class.java)
                 intent.putExtra(StoryDetailActivity.STORY, storyData)
-                startActivity(intent, null)
+
+                val optionsCompat: ActivityOptionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@MainActivity,
+                        Pair(binding.imageViewItem, "profile"),
+                        Pair(binding.textViewItemName, "name"),
+                        Pair(binding.textViewItemDesc, "description"),
+                    )
+
+                startActivity(intent, optionsCompat.toBundle())
             }
         })
         binding.storyListRecyclerView.apply {

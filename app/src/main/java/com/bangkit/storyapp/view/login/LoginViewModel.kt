@@ -46,7 +46,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                             token = loginResult?.token
                         )
                     )
-                    Toast.makeText(context, loginResult?.token, Toast.LENGTH_SHORT).show()
                 }
             }
 
