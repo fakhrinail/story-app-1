@@ -17,7 +17,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-class PostStoryViewModel(): ViewModel() {
+class PostStoryViewModel: ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
     private val _isError = MutableLiveData<Boolean>()

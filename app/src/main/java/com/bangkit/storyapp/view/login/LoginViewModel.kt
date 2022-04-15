@@ -1,12 +1,9 @@
 package com.bangkit.storyapp.view.login
 
 import android.app.Application
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.bangkit.storyapp.model.ApiResponse
 import com.bangkit.storyapp.model.login.LoginRequest
 import com.bangkit.storyapp.model.user.UserModel

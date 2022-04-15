@@ -4,34 +4,20 @@ import android.Manifest
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.bangkit.storyapp.R
 import com.bangkit.storyapp.databinding.ActivityPostStoryBinding
-import com.bangkit.storyapp.model.ApiResponse
-import com.bangkit.storyapp.retrofit.RetrofitConfig
 import com.bangkit.storyapp.util.*
-import com.bangkit.storyapp.view.login.LoginViewModel
 import com.bangkit.storyapp.view.main.MainActivity
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 
 class PostStoryActivity : AppCompatActivity() {

@@ -1,18 +1,12 @@
 package com.bangkit.storyapp.view.custom
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.content.ContextCompat
-import com.bangkit.storyapp.R
-import android.view.View as View1
 
 class PasswordEditText : AppCompatEditText {
-    private lateinit var showTextButtonImage: Drawable
     private var isTouched = false
 
     constructor(context: Context) : super(context) {

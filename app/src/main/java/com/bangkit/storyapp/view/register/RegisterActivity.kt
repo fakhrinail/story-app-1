@@ -1,16 +1,14 @@
 package com.bangkit.storyapp.view.register
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.bangkit.storyapp.databinding.ActivityRegisterBinding
 import com.bangkit.storyapp.util.showError
 import com.bangkit.storyapp.util.showLoading
 import com.bangkit.storyapp.view.login.LoginActivity
-import com.bangkit.storyapp.view.login.LoginViewModel
-import com.bangkit.storyapp.view.main.MainActivity
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding

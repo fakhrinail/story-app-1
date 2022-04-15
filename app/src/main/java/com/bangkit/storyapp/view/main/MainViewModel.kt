@@ -1,14 +1,12 @@
 package com.bangkit.storyapp.view.main
 
 import android.app.Application
-import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.bangkit.storyapp.model.ApiResponse
 import com.bangkit.storyapp.model.story.ListStoryItem
 import com.bangkit.storyapp.model.user.UserModel

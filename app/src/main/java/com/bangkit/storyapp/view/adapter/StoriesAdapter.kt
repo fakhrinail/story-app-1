@@ -1,12 +1,8 @@
 package com.bangkit.storyapp.view.adapter
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
-import androidx.core.util.Pair
 import android.view.ViewGroup
-import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bangkit.storyapp.databinding.StoryItemBinding

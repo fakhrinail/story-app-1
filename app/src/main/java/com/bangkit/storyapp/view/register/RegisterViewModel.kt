@@ -1,18 +1,11 @@
 package com.bangkit.storyapp.view.register
 
 import android.app.Application
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.bangkit.storyapp.model.ApiResponse
-import com.bangkit.storyapp.model.login.LoginRequest
 import com.bangkit.storyapp.model.register.RegisterRequest
-import com.bangkit.storyapp.model.user.UserModel
-import com.bangkit.storyapp.pref.UserPreference
 import com.bangkit.storyapp.retrofit.RetrofitConfig
 import retrofit2.Call
 import retrofit2.Callback
