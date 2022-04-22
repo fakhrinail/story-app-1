@@ -21,6 +21,7 @@ import com.bangkit.storyapp.util.showLoading
 import com.bangkit.storyapp.view.adapter.StoriesAdapter
 import com.bangkit.storyapp.view.detail.StoryDetailActivity
 import com.bangkit.storyapp.view.login.LoginActivity
+import com.bangkit.storyapp.view.maps.MapsActivity
 import com.bangkit.storyapp.view.post.PostStoryActivity
 
 class MainActivity : AppCompatActivity() {
@@ -77,6 +78,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.mapsMenu -> {
+                startActivity(Intent(this, MapsActivity::class.java))
+                true
+            }
             R.id.settingsMenu -> {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                 true

@@ -22,10 +22,12 @@ interface RetrofitService {
     ): Call<ApiResponse>
 
     @GET("stories")
-    fun getStories():Call<ApiResponse>
+    fun getStories(
+        @Query("location") location: Int?,
+    ):Call<ApiResponse>
 
     @Multipart
-    @POST("/v1/stories")
+    @POST("stories")
     fun postStory(
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,

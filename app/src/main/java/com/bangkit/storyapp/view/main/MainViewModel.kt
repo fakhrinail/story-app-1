@@ -38,7 +38,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _isLoading.value = true
 
         val context = getApplication<Application>().applicationContext
-        val client = RetrofitConfig.getApiService(context).getStories()
+        val client = RetrofitConfig.getApiService(context).getStories(null)
         client.enqueue(object : Callback<ApiResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(
