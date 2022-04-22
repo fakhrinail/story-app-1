@@ -23,7 +23,7 @@ interface RetrofitService {
 
     @GET("stories")
     fun getStories(
-        @Query("location") location: Int?,
+        @Query("location") location: Int,
     ):Call<ApiResponse>
 
     @Multipart

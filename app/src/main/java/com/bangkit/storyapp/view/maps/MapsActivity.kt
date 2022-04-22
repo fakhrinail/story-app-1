@@ -1,29 +1,26 @@
 package com.bangkit.storyapp.view.maps
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
-import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import com.bangkit.storyapp.R
 import com.bangkit.storyapp.databinding.ActivityMapsBinding
+import com.bangkit.storyapp.util.showError
+import com.bangkit.storyapp.util.showLoading
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private lateinit var markers: ArrayList<Marker?>
+
+    private val viewModel by viewModels<MapsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,66 +31,69 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        viewModel.getStoriesWithLocation()
+
+        viewModel.stories.observe(this) { stories ->
+            stories?.forEach {
+                if (it?.lon != null && it.lat != null) {
+                    val latLng = LatLng(it.lon.toDouble(), it.lat.toDouble())
+
+                    markers.add(map.addMarker(
+                        MarkerOptions()
+                            .position(latLng)
+                            .title(it.name)
+                            // TODO: Change snippet to desc
+                            .snippet("Lat: ${latLng.latitude} Long: ${latLng.longitude}")
+                    ))
+                }
+            }
+        }
+
+        viewModel.isError.observe(this) {
+            showError(it, applicationContext, "Unable to fetch stories")
+        }
+
+        viewModel.isLoading.observe(this) {
+            showLoading(it, binding.progressBar)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
         map.uiSettings.isZoomControlsEnabled = true
-        map.uiSettings.isIndoorLevelPickerEnabled = true
-        map.uiSettings.isCompassEnabled = true
         map.uiSettings.isMapToolbarEnabled = true
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        setMapStyle()
+        setMapCamera()
+    }
 
-//        val dicodingSpace = LatLng(-6.8957643, 107.6338462)
-////        map.addMarker(
-////            MarkerOptions()
-////                .position(dicodingSpace)
-////                .title("Dicoding Space")
-////                .snippet("Batik Kumeli No.50")
-////        )
-////        map.animateCamera(CameraUpdateFactory.newLatLngZoom(dicodingSpace, 15f))
-
-        map.setOnMapLongClickListener { latLng ->
-            map.addMarker(
-                MarkerOptions()
-                    .position(latLng)
-                    .title("New Marker")
-                    .snippet("Lat: ${latLng.latitude} Long: ${latLng.longitude}")
-                    .icon(vectorToBitmap(R.drawable.ic_baseline_add_24, Color.parseColor("#3DDC84")))
-            )
-        }
-
-        map.setOnPoiClickListener { pointOfInterest ->
-            val poiMarker = map.addMarker(
-                MarkerOptions()
-                    .position(pointOfInterest.latLng)
-                    .title(pointOfInterest.name)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-            )
-            poiMarker?.showInfoWindow()
+    private fun setMapStyle() {
+        try {
+            val success =
+                map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+        } catch (exception: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find style. Error: ", exception)
         }
     }
 
-    private fun vectorToBitmap(@DrawableRes id: Int, @ColorInt color: Int): BitmapDescriptor {
-        val vectorDrawable = ResourcesCompat.getDrawable(resources, id, null)
-        if (vectorDrawable == null) {
-            Log.e("BitmapHelper", "Resource not found")
-            return BitmapDescriptorFactory.defaultMarker()
+    private fun setMapCamera() {
+        val listOfMarker = markers
+        val b = LatLngBounds.Builder()
+        for (m in listOfMarker) {
+            m?.position?.let { b.include(it) }
         }
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-        DrawableCompat.setTint(vectorDrawable, color)
-        vectorDrawable.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
+        val bounds = b.build()
+        val paddingFromEdgeAsPX = 100
+        val cu = CameraUpdateFactory.newLatLngBounds(bounds,paddingFromEdgeAsPX)
+        map.animateCamera(cu)
+    }
+
+    companion object {
+        private const val TAG = "MapsActivity"
     }
 }
