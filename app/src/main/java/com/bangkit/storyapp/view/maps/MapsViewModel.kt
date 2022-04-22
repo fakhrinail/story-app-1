@@ -2,6 +2,7 @@ package com.bangkit.storyapp.view.maps
 
 import android.app.Application
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -38,6 +39,7 @@ class MapsViewModel(application: Application): AndroidViewModel(application) {
                 _isError.value = !response.isSuccessful
 
                 if (response.isSuccessful) {
+                    Log.d("MAPS", response.body().toString())
                     _stories.value = response.body()?.listStory?.sortedBy {
                         LocalDate.parse(it.createdAt, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
                     }

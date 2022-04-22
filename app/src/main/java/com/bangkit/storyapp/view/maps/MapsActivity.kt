@@ -18,7 +18,7 @@ import com.google.android.gms.maps.model.*
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
-    private lateinit var markers: ArrayList<Marker?>
+    private var markers: ArrayList<Marker?> = arrayListOf()
 
     private val viewModel by viewModels<MapsViewModel>()
 
@@ -33,22 +33,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         viewModel.getStoriesWithLocation()
-
-        viewModel.stories.observe(this) { stories ->
-            stories?.forEach {
-                if (it?.lon != null && it.lat != null) {
-                    val latLng = LatLng(it.lon.toDouble(), it.lat.toDouble())
-
-                    markers.add(map.addMarker(
-                        MarkerOptions()
-                            .position(latLng)
-                            .title(it.name)
-                            // TODO: Change snippet to desc
-                            .snippet("Lat: ${latLng.latitude} Long: ${latLng.longitude}")
-                    ))
-                }
-            }
-        }
 
         viewModel.isError.observe(this) {
             showError(it, applicationContext, "Unable to fetch stories")
@@ -66,7 +50,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map.uiSettings.isMapToolbarEnabled = true
 
         setMapStyle()
-        setMapCamera()
+
+        viewModel.stories.observe(this) { stories ->
+            stories?.forEach {
+                if (it?.lon != null && it.lat != null) {
+                    val latLng = LatLng(it.lat.toDouble(), it.lon.toDouble())
+
+                    // TODO : Check if it is okay to only show 1 marker if location is identical
+                    markers.add(map.addMarker(
+                        MarkerOptions()
+                            .position(latLng)
+                            .title(it.name)
+                            // TODO: Change snippet to desc
+                            .snippet("Lat: ${latLng.latitude} Long: ${latLng.longitude}")
+                    ))
+                }
+            }
+
+            setMapCamera()
+        }
     }
 
     private fun setMapStyle() {
@@ -88,6 +90,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             m?.position?.let { b.include(it) }
         }
         val bounds = b.build()
+        Log.d("MAPS", bounds.toString())
         val paddingFromEdgeAsPX = 100
         val cu = CameraUpdateFactory.newLatLngBounds(bounds,paddingFromEdgeAsPX)
         map.animateCamera(cu)
