@@ -3,7 +3,7 @@ package com.bangkit.storyapp.pref
 import android.content.Context
 import com.bangkit.storyapp.model.user.UserModel
 
-internal class UserPreference(context: Context) {
+class UserPreference(context: Context) {
     companion object {
         private const val PREFS_NAME = "user_pref"
         private const val NAME = "name"

@@ -20,7 +20,7 @@ class RetrofitConfig {
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
-                .addInterceptor(serviceInterceptor)
+                .addNetworkInterceptor(serviceInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://story-api.dicoding.dev/v1/")

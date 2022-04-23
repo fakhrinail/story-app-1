@@ -62,7 +62,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             .position(latLng)
                             .title(it.name)
                             // TODO: Change snippet to desc
-                            .snippet("Lat: ${latLng.latitude} Long: ${latLng.longitude}")
+                            .snippet(it.description)
                     ))
                 }
             }
@@ -90,7 +90,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             m?.position?.let { b.include(it) }
         }
         val bounds = b.build()
-        Log.d("MAPS", bounds.toString())
         val paddingFromEdgeAsPX = 100
         val cu = CameraUpdateFactory.newLatLngBounds(bounds,paddingFromEdgeAsPX)
         map.animateCamera(cu)

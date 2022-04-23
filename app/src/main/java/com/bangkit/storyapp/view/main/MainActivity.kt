@@ -12,13 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import com.bangkit.storyapp.R
+import com.bangkit.storyapp.adapter.LoadingStateAdapter
+import com.bangkit.storyapp.adapter.StoriesAdapter
 import com.bangkit.storyapp.databinding.ActivityMainBinding
 import com.bangkit.storyapp.databinding.StoryItemBinding
+import com.bangkit.storyapp.factory.ViewModelFactory
 import com.bangkit.storyapp.model.story.ListStoryItem
 import com.bangkit.storyapp.pref.UserPreference
-import com.bangkit.storyapp.util.showError
-import com.bangkit.storyapp.util.showLoading
-import com.bangkit.storyapp.view.adapter.StoriesAdapter
 import com.bangkit.storyapp.view.detail.StoryDetailActivity
 import com.bangkit.storyapp.view.login.LoginActivity
 import com.bangkit.storyapp.view.maps.MapsActivity
@@ -26,13 +26,15 @@ import com.bangkit.storyapp.view.post.PostStoryActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var storiesAdapter: StoriesAdapter
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel: MainViewModel by viewModels {
+        ViewModelFactory(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         viewModel.getUserData()
 
@@ -41,33 +43,14 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             } else {
-                viewModel.getStories()
+                Toast.makeText(this, "Langsung login", Toast.LENGTH_SHORT).show()
+                getData()
             }
-        }
-
-        setupRecyclerView()
-
-        viewModel.stories.observe(this) {
-            if (it.isNullOrEmpty()) {
-                Toast.makeText(this@MainActivity, "No story available :(", Toast.LENGTH_SHORT).show()
-            }
-
-            storiesAdapter.setStories(it)
-        }
-
-        viewModel.isError.observe(this) {
-            showError(it, applicationContext, "Unable to fetch stories")
-        }
-
-        viewModel.isLoading.observe(this) {
-            showLoading(it, binding.progressBar)
         }
 
         binding.postStoryFab.setOnClickListener {
             startActivity(Intent(this, PostStoryActivity::class.java))
         }
-
-        setContentView(binding.root)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -96,10 +79,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupRecyclerView() {
-        storiesAdapter = StoriesAdapter(this@MainActivity)
-        storiesAdapter.setOnClickedCallback(object : StoriesAdapter.OnClickedCallback {
-            override fun onClicked(storyData: ListStoryItem?, appContext: Context, binding: StoryItemBinding) {
+    private fun getData() {
+        val adapter = StoriesAdapter(this)
+        adapter.setOnClickedCallback(object : StoriesAdapter.OnClickedCallback {
+            override fun onClicked(
+                storyData: ListStoryItem?,
+                appContext: Context,
+                binding: StoryItemBinding
+            ) {
                 val intent = Intent(appContext, StoryDetailActivity::class.java)
                 intent.putExtra(StoryDetailActivity.STORY, storyData)
 
@@ -114,8 +101,15 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent, optionsCompat.toBundle())
             }
         })
-        binding.storyListRecyclerView.apply {
-            adapter = storiesAdapter
+
+        binding.storyListRecyclerView.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        )
+
+        viewModel.story.observe(this) {
+            adapter.submitData(lifecycle, it)
         }
     }
 }

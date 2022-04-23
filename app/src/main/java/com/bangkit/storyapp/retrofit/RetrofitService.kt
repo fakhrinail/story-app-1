@@ -24,7 +24,13 @@ interface RetrofitService {
     @GET("stories")
     fun getStories(
         @Query("location") location: Int,
-    ):Call<ApiResponse>
+    ): Call<ApiResponse>
+
+    @GET("stories")
+    suspend fun getPagingStories(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+    ): ApiResponse
 
     @Multipart
     @POST("stories")

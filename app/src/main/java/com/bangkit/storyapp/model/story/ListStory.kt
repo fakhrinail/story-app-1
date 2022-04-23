@@ -1,11 +1,17 @@
 package com.bangkit.storyapp.model.story
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Entity(tableName = "story")
 data class ListStoryItem(
+	@PrimaryKey
+	@field:SerializedName("id")
+	val id: String,
 
 	@field:SerializedName("photoUrl")
 	val photoUrl: String? = null,
@@ -21,9 +27,6 @@ data class ListStoryItem(
 
 	@field:SerializedName("lon")
 	val lon: Float? = null,
-
-	@field:SerializedName("id")
-	val id: String? = null,
 
 	@field:SerializedName("lat")
 	val lat: Float? = null
