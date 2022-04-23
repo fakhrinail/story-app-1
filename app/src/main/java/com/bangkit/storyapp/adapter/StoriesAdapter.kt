@@ -7,7 +7,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bangkit.storyapp.databinding.StoryItemBinding
-import com.bangkit.storyapp.helper.StoryDiffCallback
 import com.bangkit.storyapp.model.story.ListStoryItem
 import com.bumptech.glide.Glide
 
@@ -17,16 +16,6 @@ class StoriesAdapter(private val appContext: Context) : PagingDataAdapter<ListSt
 
     fun setOnClickedCallback(onClickedCallback: OnClickedCallback) {
         this.onClickedCallback = onClickedCallback
-    }
-
-    fun setStories(stories: List<ListStoryItem?>?) {
-        stories?.let {
-            val diffCallback = StoryDiffCallback(this.stories.toList(), stories)
-            val diffResult = DiffUtil.calculateDiff(diffCallback)
-            this.stories.clear()
-            this.stories.addAll(stories)
-            diffResult.dispatchUpdatesTo(this)
-        }
     }
 
     inner class ViewHolder(val binding: StoryItemBinding) : RecyclerView.ViewHolder(binding.root)
