@@ -10,6 +10,7 @@ import com.bangkit.storyapp.util.reduceFileImage
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
@@ -23,12 +24,20 @@ class PostStoryViewModel: ViewModel() {
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> = _isError
 
-    fun uploadImage(desc: String, getFile: File?, context: Context) {
+    fun uploadImage(desc: String, getFile: File?, lat: Double?, lon: Double?, context: Context) {
         if (getFile != null && desc.isNotEmpty()) {
             _isLoading.value = true
             val file = reduceFileImage(getFile)
 
             val description = desc.toRequestBody("text/plain".toMediaType())
+            var latitude: RequestBody? = null
+            var longitude: RequestBody? = null
+
+            if (lat != null && lon != null) {
+                latitude = lat.toString().toRequestBody("text/plain".toMediaType())
+                longitude = lon.toString().toRequestBody("text/plain".toMediaType())
+            }
+
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
                 "photo",
@@ -36,7 +45,7 @@ class PostStoryViewModel: ViewModel() {
                 requestImageFile
             )
 
-            val service = RetrofitConfig.getApiService(context).postStory(imageMultipart, description)
+            val service = RetrofitConfig.getApiService(context).postStory(imageMultipart, description, latitude, longitude)
 
             service.enqueue(object : Callback<ApiResponse> {
                 override fun onResponse(

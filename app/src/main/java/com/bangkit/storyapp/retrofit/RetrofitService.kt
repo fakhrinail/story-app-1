@@ -37,5 +37,7 @@ interface RetrofitService {
     fun postStory(
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
+        @Part("lat") latitude: RequestBody?,
+        @Part("lon") longitude: RequestBody?,
     ): Call<ApiResponse>
 }

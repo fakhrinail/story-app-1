@@ -21,7 +21,6 @@ class QuoteRemoteMediator(
     }
 
     override suspend fun initialize(): InitializeAction {
-        Log.d("PAGING", "init called")
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
@@ -29,7 +28,6 @@ class QuoteRemoteMediator(
         loadType: LoadType,
         state: PagingState<Int, ListStoryItem>
     ): MediatorResult {
-        Log.d("PAGING", "load called")
         val page = when (loadType) {
             LoadType.REFRESH ->{
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
@@ -51,8 +49,6 @@ class QuoteRemoteMediator(
 
         try {
             val responseData = retrofitService.getPagingStories(page, state.config.pageSize)
-            Log.d("PAGING", "get from API")
-            Log.d("PAGING", responseData.toString())
             val stories = responseData.listStory
             val endOfPaginationReached = stories!!.isNullOrEmpty()
             database.withTransaction {
@@ -70,7 +66,7 @@ class QuoteRemoteMediator(
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: Exception) {
-            Log.d("PAGING", exception.toString())
+            Log.e("PAGING", exception.toString())
             return MediatorResult.Error(exception)
         }
     }
