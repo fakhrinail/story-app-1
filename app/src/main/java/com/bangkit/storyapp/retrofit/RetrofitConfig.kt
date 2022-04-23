@@ -1,7 +1,7 @@
 package com.bangkit.storyapp.retrofit
 
 import android.content.Context
-import androidx.viewbinding.BuildConfig
+import com.bangkit.storyapp.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -20,7 +20,7 @@ class RetrofitConfig {
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
-                .addNetworkInterceptor(serviceInterceptor)
+                .addInterceptor(serviceInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://story-api.dicoding.dev/v1/")
