@@ -11,6 +11,8 @@ class UserPreference(context: Context) {
         private const val TOKEN = "token"
     }
     private val preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+
     fun setUser(value: UserModel) {
         val editor = preferences.edit()
         editor.putString(NAME, value.name)
@@ -18,11 +20,15 @@ class UserPreference(context: Context) {
         editor.putString(TOKEN, value.token)
         editor.apply()
     }
+
+
     fun clearUser() {
         val editor = preferences.edit()
         editor.clear()
         editor.apply()
     }
+
+
     fun getUser(): UserModel {
         val model = UserModel()
         model.name = preferences.getString(NAME, "")
@@ -30,6 +36,8 @@ class UserPreference(context: Context) {
         model.token = preferences.getString(TOKEN, "")
         return model
     }
+
+
     fun getToken(): String? {
         return preferences.getString(TOKEN, "")
     }

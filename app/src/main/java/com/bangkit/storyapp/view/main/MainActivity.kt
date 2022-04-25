@@ -25,6 +25,7 @@ import com.bangkit.storyapp.view.post.PostStoryActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val token: String? = getUserToken()
     private val viewModel: MainViewModel by viewModels {
         ViewModelFactory(this)
     }
@@ -35,20 +36,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.getUserData()
-
-        viewModel.userModel.observe(this) {
-            if (it.token.isNullOrBlank()) {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            } else {
-                getData()
-            }
-        }
-
         binding.postStoryFab.setOnClickListener {
             startActivity(Intent(this, PostStoryActivity::class.java))
         }
+
+        checkUserStatus()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -70,10 +62,20 @@ class MainActivity : AppCompatActivity() {
             R.id.logoutMenu -> {
                 val pref = UserPreference(applicationContext)
                 pref.clearUser()
-                viewModel.getUserData()
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
                 true
             }
             else -> true
+        }
+    }
+
+    private fun checkUserStatus() {
+        if (token == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        } else {
+            getData()
         }
     }
 
@@ -110,4 +112,9 @@ class MainActivity : AppCompatActivity() {
             adapter.submitData(lifecycle, it)
         }
     }
+
+    private fun getUserToken(): String? {
+        return UserPreference(this@MainActivity).getToken()
+    }
+
 }

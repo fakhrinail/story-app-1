@@ -11,7 +11,7 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             with(Injection) {
-                return MainViewModel(providePreferences(context), provideRepository(context)) as T
+                return MainViewModel(provideRepository(context)) as T
             }
         }
         throw IllegalArgumentException("Unknown ViewModel class")
