@@ -21,10 +21,16 @@ interface RetrofitService {
         @Body loginData: LoginRequest
     ): Call<ApiResponse>
 
+    @Headers("Content-Type: application/json", "No-Authentication: true")
+    @POST("login")
+    fun suspendedLogin(
+        @Body loginData: LoginRequest
+    ): ApiResponse
+
     @GET("stories")
-    fun getStories(
+    suspend fun getSuspendedStories(
         @Query("location") location: Int,
-    ): Call<ApiResponse>
+    ): ApiResponse
 
     @GET("stories")
     suspend fun getPagingStories(

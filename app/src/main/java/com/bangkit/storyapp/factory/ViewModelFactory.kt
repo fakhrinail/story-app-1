@@ -5,15 +5,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bangkit.storyapp.di.Injection
 import com.bangkit.storyapp.view.main.MainViewModel
+import com.bangkit.storyapp.view.maps.MapsViewModel
 
-class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+class ViewModelFactory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             with(Injection) {
                 return MainViewModel(provideRepository(context)) as T
             }
+        } else if (modelClass.isAssignableFrom(MapsViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            with(Injection) {
+                return MapsViewModel(provideRepository(context)) as T
+            }
         }
+
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

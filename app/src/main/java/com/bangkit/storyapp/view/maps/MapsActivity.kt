@@ -3,12 +3,15 @@ package com.bangkit.storyapp.view.maps
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bangkit.storyapp.R
+import com.bangkit.storyapp.data.Result
 import com.bangkit.storyapp.databinding.ActivityMapsBinding
+import com.bangkit.storyapp.factory.ViewModelFactory
+import com.bangkit.storyapp.model.story.ListStoryItem
 import com.bangkit.storyapp.util.showError
-import com.bangkit.storyapp.util.showLoading
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -18,9 +21,9 @@ import com.google.android.gms.maps.model.*
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
-    private var markers: ArrayList<Marker?> = arrayListOf()
+    private lateinit var viewModel: MapsViewModel
 
-    private val viewModel by viewModels<MapsViewModel>()
+    private var markers: ArrayList<Marker?> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,19 +31,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(
+            MapsViewModel::class.java
+        )
+
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        viewModel.getStoriesWithLocation()
-
-        viewModel.isError.observe(this) {
-            showError(it, applicationContext, "Unable to fetch stories")
-        }
-
-        viewModel.isLoading.observe(this) {
-            showLoading(it, binding.progressBar)
-        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -51,23 +48,40 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         setMapStyle()
 
-        viewModel.stories.observe(this) { stories ->
-            stories?.forEach {
-                if (it?.lon != null && it.lat != null) {
-                    val latLng = LatLng(it.lat.toDouble(), it.lon.toDouble())
-
-                    // TODO : Check if it is okay to only show 1 marker if location is identical
-                    markers.add(map.addMarker(
-                        MarkerOptions()
-                            .position(latLng)
-                            .title(it.name)
-                            // TODO: Change snippet to desc
-                            .snippet(it.description)
-                    ))
+        viewModel.getStoriesWithLocation().observe(this) { result ->
+            if(result != null) {
+                when (result) {
+                    is Result.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                    is Result.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        val stories = result.data
+                        setStoriesToMap(stories)
+                        setMapCamera()
+                    }
+                    is Result.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        showError(true, this, "Unable to fech stories")
+                    }
                 }
             }
+        }
+    }
 
-            setMapCamera()
+    private fun setStoriesToMap(stories: List<ListStoryItem>?) {
+        stories?.forEach {
+            if (it.lon != null && it.lat != null) {
+                val latLng = LatLng(it.lat.toDouble(), it.lon.toDouble())
+
+                // TODO : Check if it is okay to only show 1 marker if location is identical
+                markers.add(map.addMarker(
+                    MarkerOptions()
+                        .position(latLng)
+                        .title(it.name)
+                        .snippet(it.description)
+                ))
+            }
         }
     }
 
