@@ -11,13 +11,13 @@ import retrofit2.http.*
 interface RetrofitService {
     @Headers("Content-Type: application/json", "No-Authentication: true")
     @POST("register")
-    fun register(
+    suspend fun register(
         @Body registerData: RegisterRequest
     ): ApiResponse
 
     @Headers("Content-Type: application/json", "No-Authentication: true")
     @POST("login")
-    fun login(
+    suspend fun login(
         @Body loginData: LoginRequest
     ): ApiResponse
 
