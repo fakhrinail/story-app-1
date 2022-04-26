@@ -1,41 +1,32 @@
 package com.bangkit.storyapp.view.register
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import com.bangkit.storyapp.data.Result
 import com.bangkit.storyapp.model.ApiResponse
 import com.bangkit.storyapp.model.register.RegisterRequest
-import com.bangkit.storyapp.retrofit.RetrofitConfig
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.bangkit.storyapp.retrofit.RetrofitService
+import com.bangkit.storyapp.util.wrapEspressoIdlingResource
 
-class RegisterViewModel(application: Application) : AndroidViewModel(application) {
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
-    private val _isError = MutableLiveData<Boolean>()
-    val isError: LiveData<Boolean> = _isError
+class RegisterViewModel(private val retrofitService: RetrofitService) : ViewModel() {
+    fun register(name: String, email: String, password: String): LiveData<Result<ApiResponse>> = liveData {
+        emit(Result.Loading)
+        wrapEspressoIdlingResource {
+            try {
+                val registerData = RegisterRequest(name, email, password)
+                val response = retrofitService.register(registerData)
 
-    fun register(name: String, email: String, password: String) {
-        _isLoading.value = true
+                if (response.error == true) {
+                    throw Exception("${response.message}")
+                }
 
-        val context = getApplication<Application>().applicationContext
-        val registerData = RegisterRequest(name, email, password)
-        val client = RetrofitConfig.getApiService(context).register(registerData)
-        client.enqueue(object : Callback<ApiResponse> {
-            override fun onResponse(
-                call: Call<ApiResponse>,
-                response: Response<ApiResponse>
-            ) {
-                _isLoading.value = false
-                _isError.value = !response.isSuccessful
+                emit(Result.Success(response))
+            } catch (e: Exception) {
+                Log.d("RegisterViewModel", "register: ${e.message.toString()} ")
+                emit(Result.Error(e.message.toString()))
             }
-
-            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                _isLoading.value = false
-                _isError.value = true
-            }
-        })
+        }
     }
 }

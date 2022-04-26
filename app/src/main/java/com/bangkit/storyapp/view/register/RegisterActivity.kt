@@ -2,12 +2,13 @@ package com.bangkit.storyapp.view.register
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.bangkit.storyapp.data.Result
 import com.bangkit.storyapp.databinding.ActivityRegisterBinding
 import com.bangkit.storyapp.util.showError
-import com.bangkit.storyapp.util.showLoading
 import com.bangkit.storyapp.view.login.LoginActivity
 
 class RegisterActivity : AppCompatActivity() {
@@ -19,26 +20,31 @@ class RegisterActivity : AppCompatActivity() {
 
         binding = ActivityRegisterBinding.inflate(layoutInflater)
 
-        registerViewModel.isError.observe(this) {
-            if (it) {
-                showError(it, this@RegisterActivity, "Register error, please try again")
-            } else {
-                Toast.makeText(this@RegisterActivity, "Register successful", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            }
-        }
-
-        registerViewModel.isLoading.observe(this) {
-            showLoading(it, binding.progressBar)
-        }
-
         binding.registerButton.setOnClickListener {
             val name = binding.nameEditText.text?.trim().toString()
             val email = binding.emailEditText.text?.trim().toString()
             val pass = binding.passwordEditText.text?.trim().toString()
 
-            registerViewModel.register(name, email, pass)
+            registerViewModel.register(name, email, pass).observe(this) { result ->
+                if (result != null) {
+                    when (result) {
+                        is Result.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        is Result.Success -> {
+                            binding.progressBar.visibility = View.GONE
+
+                            Toast.makeText(this, "Register successful", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this, LoginActivity::class.java))
+                            finish()
+                        }
+                        is Result.Error -> {
+                            binding.progressBar.visibility = View.GONE
+                            showError(true, this, "Register error, please try again")
+                        }
+                    }
+                }
+            }
         }
 
         binding.loginButton.setOnClickListener {
