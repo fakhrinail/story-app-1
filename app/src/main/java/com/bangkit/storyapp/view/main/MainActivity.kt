@@ -25,7 +25,7 @@ import com.bangkit.storyapp.view.post.PostStoryActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val token: String? = getUserToken()
+    private var token: String? = null
     private val viewModel: MainViewModel by viewModels {
         ViewModelFactory(this)
     }
@@ -71,7 +71,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkUserStatus() {
-        if (token == null) {
+        token = getUserToken()
+        if (token.isNullOrEmpty()) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else {

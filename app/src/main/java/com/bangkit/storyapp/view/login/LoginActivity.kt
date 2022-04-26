@@ -6,10 +6,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bangkit.storyapp.data.Result
 import com.bangkit.storyapp.databinding.ActivityLoginBinding
+import com.bangkit.storyapp.factory.ViewModelFactory
 import com.bangkit.storyapp.pref.UserPreference
 import com.bangkit.storyapp.util.showError
 import com.bangkit.storyapp.view.main.MainActivity
@@ -17,12 +18,16 @@ import com.bangkit.storyapp.view.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private val viewModel by viewModels<LoginViewModel>()
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
+
+        viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(
+            LoginViewModel::class.java
+        )
 
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text?.trim().toString()

@@ -4,28 +4,33 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bangkit.storyapp.data.Result
 import com.bangkit.storyapp.databinding.ActivityRegisterBinding
+import com.bangkit.storyapp.factory.ViewModelFactory
 import com.bangkit.storyapp.util.showError
 import com.bangkit.storyapp.view.login.LoginActivity
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
-    private val registerViewModel by viewModels<RegisterViewModel>()
+    private lateinit var viewModel: RegisterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRegisterBinding.inflate(layoutInflater)
 
+        viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(
+            RegisterViewModel::class.java
+        )
+
         binding.registerButton.setOnClickListener {
             val name = binding.nameEditText.text?.trim().toString()
             val email = binding.emailEditText.text?.trim().toString()
             val pass = binding.passwordEditText.text?.trim().toString()
 
-            registerViewModel.register(name, email, pass).observe(this) { result ->
+            viewModel.register(name, email, pass).observe(this) { result ->
                 if (result != null) {
                     when (result) {
                         is Result.Loading -> {
