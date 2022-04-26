@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import com.bangkit.storyapp.adapter.StoriesAdapter
-import com.bangkit.storyapp.database.StoryDatabase
 import com.bangkit.storyapp.model.story.ListStoryItem
-import com.bangkit.storyapp.retrofit.RetrofitService
 import com.bangkit.storyapp.util.DataDummy
 import com.bangkit.storyapp.util.MainCoroutineRule
 import com.bangkit.storyapp.util.getOrAwaitValue
@@ -16,7 +14,6 @@ import com.bangkit.storyapp.view.main.noopListUpdateCallback
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -34,15 +31,7 @@ class StoryRepositoryTest {
     var mainCoroutineRules = MainCoroutineRule()
 
     @Mock
-    private lateinit var retrofitService: RetrofitService
-    private lateinit var storyDatabase: StoryDatabase
     private lateinit var storyRepository: StoryRepository
-
-
-    @Before
-    fun setUp() {
-        storyRepository = StoryRepository(storyDatabase, retrofitService)
-    }
 
     @Test
     fun `when GetStories Should Not Null and Return Success`() = mainCoroutineRules.runBlockingTest {
