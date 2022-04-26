@@ -9,15 +9,15 @@ import okhttp3.RequestBody
 import retrofit2.Call
 
 class FakeRetrofitService: RetrofitService {
-    override fun register(registerData: RegisterRequest): Call<ApiResponse> {
+    override suspend fun register(registerData: RegisterRequest): ApiResponse {
         TODO("Not yet implemented")
     }
 
-    override fun login(loginData: LoginRequest): Call<ApiResponse> {
+    override suspend fun login(loginData: LoginRequest): ApiResponse {
         TODO("Not yet implemented")
     }
 
-    override fun getStories(location: Int): Call<ApiResponse> {
+    override suspend fun getSuspendedStories(location: Int): ApiResponse {
         TODO("Not yet implemented")
     }
 
