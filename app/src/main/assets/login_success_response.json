@@ -1,0 +1,9 @@
+{
+  "error": false,
+  "message": "success",
+  "loginResult": {
+    "userId": "user-iVqVCPHmto4Dh-GF",
+    "name": "fakhri",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLWlWcVZDUEhtdG80RGgtR0YiLCJpYXQiOjE2NTA5MDUwNDB9.g1EG3mOXa_vfeRbK8X5im3udqJi9uURXEzsDEK3P-mo"
+  }
+}
