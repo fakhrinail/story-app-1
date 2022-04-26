@@ -1,55 +1,34 @@
 package com.bangkit.storyapp.view.login
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.bangkit.storyapp.model.ApiResponse
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import com.bangkit.storyapp.data.Result
 import com.bangkit.storyapp.model.login.LoginRequest
 import com.bangkit.storyapp.model.user.UserModel
-import com.bangkit.storyapp.pref.UserPreference
-import com.bangkit.storyapp.retrofit.RetrofitConfig
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.bangkit.storyapp.retrofit.RetrofitService
+import com.bangkit.storyapp.util.wrapEspressoIdlingResource
 
-class LoginViewModel(application: Application) : AndroidViewModel(application) {
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
-    private val _isError = MutableLiveData<Boolean>()
-    val isError: LiveData<Boolean> = _isError
+class LoginViewModel(private val retrofitService: RetrofitService) : ViewModel() {
+    fun login(email: String, password: String): LiveData<Result<UserModel>> = liveData {
+        emit(Result.Loading)
+        wrapEspressoIdlingResource {
+            try {
+                val loginData = LoginRequest(email, password)
+                val response = retrofitService.suspendedLogin(loginData)
 
-    fun login(email: String, password: String) {
-        _isLoading.value = true
-
-        val context = getApplication<Application>().applicationContext
-        val userPreference = UserPreference(context)
-        val loginData = LoginRequest(email, password)
-        val client = RetrofitConfig.getApiService(context).login(loginData)
-        client.enqueue(object : Callback<ApiResponse> {
-            override fun onResponse(
-                call: Call<ApiResponse>,
-                response: Response<ApiResponse>
-            ) {
-                _isLoading.value = false
-                _isError.value = !response.isSuccessful
-
-                if (response.isSuccessful) {
-                    val loginResult = response.body()?.loginResult
-                    userPreference.setUser(
-                        UserModel(
-                            name = loginResult?.name,
-                            userId = loginResult?.userId,
-                            token = loginResult?.token
-                        )
+                val user = with(response.loginResult) {
+                    UserModel(
+                        this?.name, this?.token, this?.userId
                     )
                 }
-            }
 
-            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                _isLoading.value = false
-                _isError.value = true
+                emit(Result.Success(user))
+            } catch (e: Exception) {
+                Log.d("StoryRepository", "getStoriesWithLocation: ${e.message.toString()} ")
+                emit(Result.Error(e.message.toString()))
             }
-        })
+        }
     }
 }
