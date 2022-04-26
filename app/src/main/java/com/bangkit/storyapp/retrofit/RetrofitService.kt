@@ -13,17 +13,11 @@ interface RetrofitService {
     @POST("register")
     fun register(
         @Body registerData: RegisterRequest
-    ): Call<ApiResponse>
+    ): ApiResponse
 
     @Headers("Content-Type: application/json", "No-Authentication: true")
     @POST("login")
     fun login(
-        @Body loginData: LoginRequest
-    ): Call<ApiResponse>
-
-    @Headers("Content-Type: application/json", "No-Authentication: true")
-    @POST("login")
-    fun suspendedLogin(
         @Body loginData: LoginRequest
     ): ApiResponse
 

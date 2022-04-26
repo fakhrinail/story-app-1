@@ -16,7 +16,7 @@ class LoginViewModel(private val retrofitService: RetrofitService) : ViewModel()
         wrapEspressoIdlingResource {
             try {
                 val loginData = LoginRequest(email, password)
-                val response = retrofitService.suspendedLogin(loginData)
+                val response = retrofitService.login(loginData)
 
                 val user = with(response.loginResult) {
                     UserModel(
