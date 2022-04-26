@@ -32,7 +32,7 @@ class MapsViewModelTest{
     }
 
     @Test
-    fun `when Get HeadlineNews Should Not Null and Return Success`() {
+    fun `when GetStoriesWithLocation Should Not Null and Return Success`() {
         val expectedStories = MutableLiveData<Result<List<ListStoryItem>?>>()
         expectedStories.value = Result.Success(dummyStories)
 
@@ -40,6 +40,7 @@ class MapsViewModelTest{
 
         val actualStories = mapsViewModel.getStoriesWithLocation().getOrAwaitValue()
         Mockito.verify(storyRepository).getStoriesWithLocation()
+
         Assert.assertNotNull(actualStories)
         Assert.assertTrue(actualStories is Result.Success)
         Assert.assertEquals(dummyStories.size, (actualStories as Result.Success).data?.size)
