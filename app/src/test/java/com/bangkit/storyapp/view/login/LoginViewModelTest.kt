@@ -25,6 +25,7 @@ class LoginViewModelTest {
     private var dummyEmail: String? = null
     private var dummyPassword: String? = null
     private val dummyUser = DataDummy.generateDummyUserModel()
+    private val dummyFailedResponse = DataDummy.generateDummyFailedResponseModel()
 
     @Test
     fun `when Login Input Should Not Null and Success`() {
@@ -43,9 +44,28 @@ class LoginViewModelTest {
         Assert.assertEquals(dummyUser.userId, (actualUser as Result.Success).data.userId)
     }
 
+    @Test
+    fun `when Login Input Invalid and Failed`() {
+        dummyEmail = "test@gmail.com"
+        dummyPassword = "test123"
+
+        val expectedResponse = MutableLiveData<Result<UserModel>>()
+        expectedResponse.value = dummyFailedResponse.message?.let { Result.Error(it) }
+
+        Mockito.`when`(loginViewModel.login(dummyEmail!!, dummyPassword!!))
+            .thenReturn(expectedResponse)
+
+        val actualResponse = loginViewModel.login(dummyEmail!!, dummyPassword!!).getOrAwaitValue()
+
+        Assert.assertNotNull(actualResponse)
+        Assert.assertTrue(actualResponse is Result.Error)
+        Assert.assertEquals(dummyFailedResponse.message, (actualResponse as Result.Error).error)
+    }
+
     @Test(expected = NullPointerException::class)
     fun `when Login Input Null and Exception Thrown`() {
-        Mockito.`when`(loginViewModel.login(dummyEmail!!, dummyPassword!!)).thenThrow(NullPointerException())
+        Mockito.`when`(loginViewModel.login(dummyEmail!!, dummyPassword!!))
+            .thenThrow(NullPointerException())
 
         loginViewModel.login(dummyEmail!!, dummyPassword!!).getOrAwaitValue()
     }

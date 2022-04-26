@@ -18,15 +18,20 @@ class LoginViewModel(private val retrofitService: RetrofitService) : ViewModel()
                 val loginData = LoginRequest(email, password)
                 val response = retrofitService.login(loginData)
 
+                if (response.error == true) {
+                    throw Exception("${response.message}")
+                }
+
+                // force non-null to ensure success
                 val user = with(response.loginResult) {
                     UserModel(
-                        this?.name, this?.token, this?.userId
+                        this?.name!!, this.token!!, this.userId!!
                     )
                 }
 
                 emit(Result.Success(user))
             } catch (e: Exception) {
-                Log.d("StoryRepository", "getStoriesWithLocation: ${e.message.toString()} ")
+                Log.d("LoginViewModel", "login: ${e.message.toString()} ")
                 emit(Result.Error(e.message.toString()))
             }
         }

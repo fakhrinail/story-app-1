@@ -1,9 +1,18 @@
 package com.bangkit.storyapp.util
 
+import com.bangkit.storyapp.model.ApiResponse
 import com.bangkit.storyapp.model.story.ListStoryItem
 import com.bangkit.storyapp.model.user.UserModel
 
 object DataDummy {
+    fun generateDummySuccessResponseModel(): ApiResponse {
+        return ApiResponse(false, "success")
+    }
+
+    fun generateDummyFailedResponseModel(): ApiResponse {
+        return ApiResponse(true, "Error message")
+    }
+
     fun generateDummyUserModel(): UserModel {
         return UserModel(
             name = "Fakhri Nail",
