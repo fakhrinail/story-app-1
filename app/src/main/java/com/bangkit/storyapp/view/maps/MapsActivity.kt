@@ -31,9 +31,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(
-            MapsViewModel::class.java
-        )
+        viewModel = ViewModelProvider(this, ViewModelFactory(this))[MapsViewModel::class.java]
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -73,8 +71,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         stories?.forEach {
             if (it.lon != null && it.lat != null) {
                 val latLng = LatLng(it.lat.toDouble(), it.lon.toDouble())
+                Log.d("MARKERS", it.toString())
 
-                // TODO : Check if it is okay to only show 1 marker if location is identical
                 markers.add(map.addMarker(
                     MarkerOptions()
                         .position(latLng)

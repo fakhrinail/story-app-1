@@ -27,8 +27,6 @@ class PostStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPostStoryBinding
     private lateinit var currentPhotoPath: String
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var lastLatitude: Double? = null
-    private var lastLongitude: Double? = null
 
     private var getFile: File? = null
 

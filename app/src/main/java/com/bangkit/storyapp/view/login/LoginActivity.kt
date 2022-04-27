@@ -25,9 +25,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
-        viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(
-            LoginViewModel::class.java
-        )
+        viewModel = ViewModelProvider(this, ViewModelFactory(this))[LoginViewModel::class.java]
 
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text?.trim().toString()

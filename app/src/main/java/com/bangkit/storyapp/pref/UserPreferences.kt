@@ -29,15 +29,6 @@ class UserPreference(context: Context) {
     }
 
 
-    fun getUser(): UserModel {
-        val model = UserModel()
-        model.name = preferences.getString(NAME, "")
-        model.userId = preferences.getString(USER_ID, "")
-        model.token = preferences.getString(TOKEN, "")
-        return model
-    }
-
-
     fun getToken(): String? {
         return preferences.getString(TOKEN, "")
     }

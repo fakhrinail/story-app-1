@@ -21,9 +21,7 @@ class RegisterActivity : AppCompatActivity() {
 
         binding = ActivityRegisterBinding.inflate(layoutInflater)
 
-        viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(
-            RegisterViewModel::class.java
-        )
+        viewModel = ViewModelProvider(this, ViewModelFactory(this))[RegisterViewModel::class.java]
 
         binding.registerButton.setOnClickListener {
             val name = binding.nameEditText.text?.trim().toString()
